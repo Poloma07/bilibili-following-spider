@@ -8,13 +8,12 @@ for i in conn.execute("select mid,name from user order by id").fetchall():
     user[i[0]] = i[1]
 wordlist = []
 for i in conn.execute("select following from relation order by id").fetchall():
-    #    print(i)
     if i[0] in user:
         wordlist.append(user[i[0]])
 wl_space_split = " ".join(wordlist)
 mask_png = imread("fate.jpeg")
 my_wordcloud = WordCloud(
-    font_path=r"C:\Windows\Fonts\simhei.ttf",
+    font_path=r"C:\Windows\Fonts\simhei.ttf",# 词云自带的字体不支持中文，在windows环境下使用黑体中文
     background_color="white",  # 背景颜色
     max_words=500,  # 词云显示的最大词数
     max_font_size=100,  # 字体最大值
@@ -25,10 +24,8 @@ image_colors = ImageColorGenerator(mask_png)
 plt.figure()
 plt.imshow(my_wordcloud.recolor(color_func=image_colors))
 plt.axis("off")
-# 绘制背景图片为颜色的图片
 plt.figure()
 plt.imshow(mask_png, cmap=plt.cm.gray)
 plt.axis("off")
 plt.show()
-# 保存图片plt.axis("off")
 my_wordcloud.to_file("wordcloud.png")
